@@ -21,10 +21,17 @@ for i, line in enumerate(lines):
         name_map[key] = value
     except Exception as e: print(e); options = "Failed to parse config line:{}".format(i+1).encode()
 
+name_map["disconnect"] = None
+
 p = subp.Popen(["dmenu"], stdout=subp.PIPE, stdin=subp.PIPE, stderr=subp.PIPE)
 options = b"\n".join(name_map.keys()) if not options else options
 stdout_data = p.communicate(input=options)[0]
 
 selection = stdout_data.removesuffix(b"\n")
 
-subp.run(["bluetoothctl", "connect", name_map[selection]])
+device = name_map[selection]
+
+if device:
+    subp.run(["bluetoothctl", "connect", device])
+else:
+    subp.run(["bluetoothctl", "disconnect"])

@@ -21,7 +21,7 @@ for i, line in enumerate(lines):
         name_map[key] = value
     except Exception as e: print(e); options = "Failed to parse config line:{}".format(i+1).encode()
 
-name_map["disconnect"] = None
+name_map[b"disconnect"] = None
 
 p = subp.Popen(["dmenu"], stdout=subp.PIPE, stdin=subp.PIPE, stderr=subp.PIPE)
 options = b"\n".join(name_map.keys()) if not options else options
